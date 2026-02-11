@@ -1,0 +1,27 @@
+name: Submit Application
+
+on:
+  workflow_dispatch:
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Submit application
+        env:
+          SIGNING_SECRET: ${{ secrets.SIGNING_SECRET }}
+          SUBMISSION_URL: ${{ secrets.SUBMISSION_URL }}
+          NAME: ${{ secrets.NAME }}
+          EMAIL: ${{ secrets.EMAIL }}
+          RESUME_LINK: ${{ secrets.RESUME_LINK }}
+        run: python submit_application.py
